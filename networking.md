@@ -2,7 +2,7 @@
 
 ## 1. Problema
 
-Las máquinas virtuales del entorno de desarrollo de InnovaCloud usan el modo de red **NAT por defecto** de VirtualBox, lo cual dificulta la comunicación entre máquinas virtuales entre sí y con otros recursos corporativos (servidores, otras VMs, equipos de la red interna).
+Las máquinas virtuales del entorno de desarrollo de InnovaCloud usan el modo de red NAT por defecto de VirtualBox, lo cual dificulta la comunicación entre máquinas virtuales entre sí y con otros recursos corporativos (servidores, otras VMs, equipos de la red interna).
 
 ## 2. ¿Por qué el modo NAT es una limitante en un entorno colaborativo?
 
@@ -14,13 +14,13 @@ En el modo NAT cada máquina virtual vive detrás de una red privada y aislada c
 
 ## 3. Modo recomendado: **Adaptador Puente (Bridged)**
 
-**¿Por qué Bridged y no otro modo?**
+¿Por qué Bridged y no otro modo?
 
-- En modo **Puente**, la VM obtiene una IP dentro del mismo segmento de red física de la empresa (como si fuera un equipo más conectado al switch corporativo).
-- Esto permite que la VM sea alcanzable **tanto por otras VMs como por cualquier recurso de la red corporativa** (servidores, otras estaciones de trabajo), cumpliendo exactamente la necesidad planteada: comunicación entre máquinas virtuales y recursos corporativos.
-- A diferencia de **NAT Network** o **Red Interna**, que solo resuelven la comunicación *entre VMs* pero mantienen aislamiento del resto de la red corporativa, **Bridged** integra la VM de forma completa a la infraestructura existente, sin necesidad de reglas de redirección de puertos.
+- En modo puente, la VM obtiene una IP dentro del mismo segmento de red física de la empresa (como si fuera un equipo más conectado al switch corporativo).
+- Esto permite que la VM sea alcanzable tanto por otras VMs como por cualquier recurso de la red corporativa (servidores, otras estaciones de trabajo), cumpliendo exactamente la necesidad planteada: comunicación entre máquinas virtuales y recursos corporativos.
+- A diferencia de NAT Network o Red Interna, que solo resuelven la comunicación entre VMs pero mantienen aislamiento del resto de la red corporativa, Bridged integra la VM de forma completa a la infraestructura existente, sin necesidad de reglas de redirección de puertos.
 
-> **Cuándo NO usar Bridged:** si se necesitara aislar completamente un entorno de pruebas (por ejemplo, para no exponer una VM vulnerable a la red corporativa), **Red Interna** sería más apropiada. Pero para el caso de un entorno de *desarrollo colaborativo*, Bridged es la opción correcta.
+> ¿Cuándo no se debe usar Bridged? Si se necesitara aislar completamente un entorno de pruebas (por ejemplo, para no exponer una VM vulnerable a la red corporativa), Red Interna sería más apropiada. Pero para el caso de un entorno de desarrollo colaborativo, Bridged es la opción correcta.
 
 ## 4. Configuración de IP estática con Netplan
 
@@ -33,7 +33,7 @@ En un entorno de desarrollo donde otras VMs o servicios necesitan conectarse de 
 ```bash
 ip a
 ```
-*¿Por qué?* Antes de configurar Netplan hay que confirmar el nombre exacto de la interfaz (por ejemplo `enp0s3`), ya que varía según el hardware virtual y la distribución.
+¿Por qué? Antes de configurar Netplan hay que confirmar el nombre exacto de la interfaz (por ejemplo `enp0s3`), ya que varía según el hardware virtual y la distribución.
 
 ### 4.2. Editar el archivo de configuración de Netplan
 
